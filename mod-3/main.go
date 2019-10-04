@@ -1,18 +1,11 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
+	"github.com/alexashley/cloud-native-fizzbuzz/server"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 )
-
-var logger = log.New(os.Stdout, "[mod-3] ", log.Ldate|log.Ltime|log.Lmicroseconds|log.LUTC|log.Lshortfile)
-var server http.Server
 
 type mod3Query struct {
 	Value int `json:"value"`
@@ -26,14 +19,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
-		w.WriteHeader(400)
+		server.BadRequest(w)
+		server.Warnf(r.Context(), "Failed to read body: %v", err)
 		return
 	}
 
 	var query mod3Query
 
+	server.Debugf(r.Context(), "body: %s", body)
+
 	if err = json.Unmarshal(body, &query); err != nil {
-		w.WriteHeader(400)
+		server.Warnf(r.Context(), "Failed to parse body: %v", err)
+		server.BadRequest(w)
 		return
 	}
 
@@ -44,46 +41,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	res, err := json.Marshal(mod3)
 
 	if err != nil {
-		w.WriteHeader(500)
+		server.Internal(w)
 		return
 	}
 
 	if written, err := w.Write(res); err != nil || written != len(res) {
-		w.WriteHeader(500)
+		server.Internal(w)
 		return
 	}
 }
 
-func initSigHandler() {
-	c := make(chan os.Signal)
-	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
-	s := <-c
-
-	logger.Printf("Got signal %s, stopping server", s.String())
-
-	if err := server.Shutdown(context.Background()); err != nil {
-		logger.Fatalf("Error occurred while stopping server %v", err)
-	}
-
-	logger.Printf("Finished server shutdown")
-	os.Exit(0)
-}
-
 func main() {
-	go initSigHandler()
-	port := os.Getenv("PORT")
-
-	if port == "" {
-		port = ":8080"
-	}
-
-	m := http.NewServeMux()
-	server = http.Server{Addr: port, Handler: m}
-
-	m.HandleFunc("/api/v1/math/mod/3", handler)
-
-	logger.Printf("Starting server on %s", port)
-	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		logger.Fatal(err)
-	}
+	server.Init("mod-3")
+	server.Route("/api/v1/math/mod/3", handler)
+	server.Start()
 }
