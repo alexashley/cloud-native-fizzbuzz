@@ -10,8 +10,8 @@ import (
 func TestDivisibleByThree(t *testing.T) {
 	c := server.NewClient("http://localhost:8080")
 
-	payload := domain.Mod3Query{Value: 3}
-	var result domain.Mod3Result
+	payload := domain.Mod3OracleRequest{Value: 3}
+	var result domain.Mod3OracleResponse
 
 	response, err := c.Post("/api/v1/math/mod/3", payload, &result, nil)
 	if err != nil {
@@ -30,8 +30,8 @@ func TestDivisibleByThree(t *testing.T) {
 func TestNotDivisbleByThree(t *testing.T) {
 	c := server.NewClient("http://localhost:8080")
 
-	payload := domain.Mod3Query{Value: 4}
-	var result domain.Mod3Result
+	payload := domain.Mod3OracleRequest{Value: 4}
+	var result domain.Mod3OracleResponse
 
 	response, err := c.Post("/api/v1/math/mod/3", payload, &result, nil)
 
@@ -53,7 +53,7 @@ func TestInvalidPayload(t *testing.T) {
 	payload := struct{ Value string }{
 		"abc",
 	}
-	var result domain.Mod3Result
+	var result domain.Mod3OracleResponse
 
 	_, err := c.Post("/api/v1/math/mod/3", payload, &result, nil)
 
@@ -76,7 +76,7 @@ func TestEmptyFieldResult(t *testing.T) {
 		"abc",
 	}
 
-	var result domain.Mod3Result
+	var result domain.Mod3OracleResponse
 
 	_, err := c.Post("/api/v1/math/mod/3", payload, &result, nil)
 

@@ -7,13 +7,13 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	var query domain.Mod3Query
+	var query domain.Mod3OracleRequest
 
 	if !server.ParseBody(w, r, &query) {
 		return
 	}
 
-	server.WriteBody(w, r, domain.Mod3Result{
+	server.WriteBody(w, r, domain.Mod3OracleResponse{
 		IsDivisibleByThree: query.Value%3 == 0,
 	})
 }

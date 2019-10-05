@@ -1,9 +1,9 @@
 package domain
 
-type Mod3Query struct {
+type Mod3OracleRequest struct {
 	Value int `json:"value"`
 }
 
-type Mod3Result struct {
+type Mod3OracleResponse struct {
 	IsDivisibleByThree bool `json:"divisibleByThree"`
 }
