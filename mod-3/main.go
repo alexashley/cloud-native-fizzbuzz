@@ -2,18 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/alexashley/cloud-native-fizzbuzz/domain"
 	"github.com/alexashley/cloud-native-fizzbuzz/server"
 	"io/ioutil"
 	"net/http"
 )
-
-type mod3Query struct {
-	Value int `json:"value"`
-}
-
-type mod3Result struct {
-	IsDivisibleByThree bool `json:"divisibleByThree"`
-}
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
@@ -24,7 +17,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var query mod3Query
+	var query domain.Mod3Query
 
 	server.Debugf(r.Context(), "body: %s", body)
 
@@ -34,7 +27,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	mod3 := mod3Result{
+	mod3 := domain.Mod3Result{
 		IsDivisibleByThree: query.Value%3 == 0,
 	}
 
