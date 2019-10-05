@@ -37,6 +37,7 @@ func Route(pattern string, handler http.HandlerFunc) {
 		handler(w, r)
 		end := time.Now()
 		diff := end.Sub(start)
+
 		Infof(r.Context(), "end (elapsed %s)", diff.String())
 	})
 }

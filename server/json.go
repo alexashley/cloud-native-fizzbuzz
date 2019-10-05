@@ -12,7 +12,6 @@ func ParseBody(w http.ResponseWriter, r *http.Request, v interface{}) bool {
 	if err != nil {
 		BadRequest(w)
 		Warnf(r.Context(), "Failed to read body: %v", err)
-
 		return false
 	}
 

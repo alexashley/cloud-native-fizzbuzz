@@ -3,9 +3,9 @@ package server
 import "net/http"
 
 func BadRequest(w http.ResponseWriter) {
-	w.WriteHeader(400)
+	w.WriteHeader(http.StatusBadRequest)
 }
 
 func Internal(w http.ResponseWriter) {
-	w.WriteHeader(500)
+	w.WriteHeader(http.StatusInternalServerError)
 }
