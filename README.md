@@ -2,7 +2,7 @@
 
 badges go here
 
-## Background
+## background
 
 [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) is a complex engineering problem that requires a combined mastery of advanced mathematical concepts and programming techniques, such as congruence relations and iteration. 
 It's often used in the final stages of job interviews, after trivial screening questions about red-black trees and system architecture. 
@@ -19,6 +19,6 @@ Thanks to the immense growth and proliferation of cloud native technologies, it'
 This repository is an example of the use of these technologies, specifically Go, Kubernetes, Helm, Docker, Istio, NATS, and Open Policy Agent. 
 It demonstrates how FizzBuzz can be split into separate, logical domains, each with their own microservices communicating via a service mesh. See the [architecture](#architecture) for more information. 
 
-## Architecture
+## architecture
 
-## Local Development
+## local development
