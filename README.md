@@ -22,3 +22,14 @@ It demonstrates how FizzBuzz can be split into separate, logical domains, each w
 ## architecture
 
 ## local development
+
+You'll need the following:
+
+- `kubectl`
+- `helm`
+- `k3d` (optional)
+
+If you have `k3d` installed, create a cluster using `./scripts/bootstrap-cluster.sh`. 
+Once that finishes, `./scripts/import-images.sh` will build and import the Docker images. 
+
+Finally `./scripts/apply.sh` will apply the Helm chart. 
