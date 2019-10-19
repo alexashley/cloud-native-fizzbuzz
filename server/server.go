@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 	"net/http"
 	"os"
@@ -24,6 +25,10 @@ func Init(app string) {
 
 	mux = http.NewServeMux()
 	server = http.Server{Addr: port, Handler: mux}
+
+	mux.HandleFunc("/healthz", func(writer http.ResponseWriter, request *http.Request) {
+		_, _ = writer.Write([]byte(fmt.Sprintf(`{"status": "ok", "service": "%s"}`, app)))
+	})
 }
 
 func Route(pattern string, handler http.HandlerFunc) {
