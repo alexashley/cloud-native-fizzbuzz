@@ -3,7 +3,7 @@ MAKEFLAGS += --silent
 .DEFAULT_GOAL := build
 .PHONY: build docker run test
 
-VERSION := $$(git log -n 1 --pretty=format:%h -- main.go)
+VERSION := $$(git rev-parse --short HEAD)
 
 build:
 	go build -o mod-3
